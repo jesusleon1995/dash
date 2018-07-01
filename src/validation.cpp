@@ -1306,11 +1306,16 @@ bool IsInitialBlockDownload()
     const CChainParams& chainParams = Params();
     if (chainActive.Tip() == NULL)
         return true;
-    if (chainActive.Tip()->nChainWork < UintToArith256(chainParams.GetConsensus().nMinimumChainWork))
+    if (chainActive.Tip()->nChainWork < UintToArith256(chainParams.GetConsensus().nMinimumChainWork)){
+        LogPrintf("IsInitialBlockDownload: nChainWork\n");
         return true;
-    if (chainActive.Tip()->GetBlockTime() < (GetTime() - chainParams.MaxTipAge()))
+    }
+    if (chainActive.Tip()->GetBlockTime() < (GetTime() - chainParams.MaxTipAge())){
+        LogPrintf("IsInitialBlockDownload: GetBlockTime\n");
         return true;
+    }
     lockIBDState = true;
+    LogPrintf("IsInitialBlockDownload: else");
     return false;
 }
 
@@ -3958,7 +3963,7 @@ bool LoadBlockIndex()
     return true;
 }
 
-bool InitBlockIndex(const CChainParams& chainparams) 
+bool InitBlockIndex(const CChainParams& chainparams)
 {
     LOCK(cs_main);
 
